@@ -1,71 +1,54 @@
-# ⚠️このリポジトリは開発中のプロジェクトです
+# React + TypeScript + Vite
 
----
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-# Kantan Play MIDIプレイヤー
+Currently, two official plugins are available:
 
-Kantan Play MIDIプレイヤーは、Webブラウザ上で動作し、数字入力によるシーケンスをMIDI（BLE MIDI対応）経由でKantan Play（MIDI機器）へ送信・演奏できるアプリケーションです。
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## 概要
+## Expanding the ESLint configuration
 
-- ブラウザからMIDI機器（Kantan Play）をMIDIまたはBLE MIDI経由で演奏
-- ユーザーが画面上で数字（1〜7）を入力し、シーケンスを作成
-- BPM・倍数・繰り返し回数などの設定が可能
-- 入力したシーケンスを任意のタイミングで再生・停止
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-## 主な機能
-
-- Web MIDI API/BLE MIDIによるMIDI機器接続
-- シーケンス入力UI（数字キーで1〜7を入力、ステップ表示・カーソル移動）
-- BPM・倍数・繰り返し回数の設定UI
-- 再生・停止ボタンによるシーケンス演奏制御
-- 入力数字をMIDIノート（1→60, 2→62, ...）にマッピングし、正しいタイミングで送信
-- MIDI接続状態の画面表示
-- モダンかつレスポンシブなUI/UX
-
-## セットアップ
-
-1. このリポジトリをクローン
-
-```sh
-git clone https://github.com/necobit/kantanplay-player.git
-cd kantanplay-player
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
 ```
 
-2. 必要な依存パッケージをインストール（※今後追加予定）
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```sh
-# 例: npm install
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
 ```
-
-3. 開発サーバー起動（例: Vite/Next.js等を利用予定）
-
-```sh
-# 例: npm run dev
-```
-
-4. 対応ブラウザ（Chrome推奨）でアクセス
-
-## 使い方
-
-1. MIDI/BLE MIDIデバイスを接続
-2. 画面上でシーケンス（1〜7の数字）を入力
-3. BPM・倍数・繰り返し回数を設定
-4. 再生ボタンでシーケンスを演奏
-5. 停止ボタンで演奏停止
-
-## 動作環境
-
-- Web MIDI API/BLE MIDI対応ブラウザ（Google Chrome推奨）
-- Kantan Play等のMIDI機器
-
-## ライセンス
-
-このプロジェクトのライセンスは [LICENSE](./LICENSE) をご参照ください。
-
----
-
-## 注意事項
-
-- 本プロジェクトは現在開発中です。仕様・UI・機能は今後大きく変更される可能性があります。
-- IssueやPRによるフィードバック・コントリビュート歓迎です。
